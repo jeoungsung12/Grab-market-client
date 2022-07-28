@@ -1,19 +1,21 @@
 import React from 'react';
 import './index.css';
 import axios from "axios";
+import {Link} from 'react-router-dom';
 function MainPage() {
     const [products, setProducts] = React.useState([]);
     React.useEffect(
         function(){
             axios.get("https://a8fb4f58-df1e-4cae-a690-f971bcd08dd5.mock.pstmn.io/products")
     .then(function(result){
+        console.log(result);
         const products = result.data.products;
         setProducts(products);
     }).catch(function(error){
-        console.error('에러발생 : ', error);
+        console.error('에러 발생 : ',error);
     });
         },[]
-    )
+    );
     return (<div>
         <div id = "header">
             <div id = "header-area">
@@ -29,23 +31,26 @@ function MainPage() {
                 {
                     products.map(function(product, index){
                         return (
-                            <div className="product-card">
-                        <div>
-                            <img className="product-img" src={product.imageUrl}/>
-                        </div>
-                        <div className='product-contents'>
-                            <span className='product-name'>
-                                {product.name}
-                            </span>
-                            <span className='product-price'>
-                                {product.price}원
-                            </span>
-                            <div className='product-seller'>
-                                <img className='product-avatar' src = "images/icons/avatar.png" />
-                                <span>{product.seller}</span>
+                         <div className="product-card">
+                           <Link className="product-link" to={"/product/"+index}>
+                            <div>
+                                <img className="product-img" src={product.imageUrl}/>
                             </div>
-                        </div>
-                    </div>);
+                            <div className='product-contents'>
+                                <span className='product-name'>
+                                    {product.name}
+                                </span>
+                                <span className='product-price'>
+                                    {product.price}원
+                                </span>
+                                <div className='product-seller'>
+                                    <img className='product-avatar' src = "images/icons/avatar.png" />
+                                    <span>{product.seller}</span>
+                                </div>
+                            </div>
+                           </Link>
+                          </div>
+                        );
                     })
                 }
             </div>
